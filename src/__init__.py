@@ -21,3 +21,6 @@ University of British Columbia
 # 604-822-8580 for further information.
 
 from .test import test, normtest
+from .fdct2 import *
+from .fdct3 import *
+

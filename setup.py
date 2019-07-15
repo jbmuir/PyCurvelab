@@ -11,8 +11,14 @@ import sys
 import os
 from distutils.core import setup, Extension
 
-FFTW = os.environ['FFTW']
-FDCT = os.environ['FDCT']
+# os.environ["CC"] = "gcc-9"
+# # just to be sure
+# os.environ["CXX"] = "g++-9"
+
+FFTW = "/usr/local/"#os.environ['FFTW']
+CPP = "/usr/lib/"
+FDCT = "/Users/jackbmuir/Builds/CurveLab-2.1.3/"#os.environ['FDCT']
+
 
 for arg in sys.argv:
     a = arg.split('=')
@@ -44,11 +50,17 @@ setup(name='pyct',
       ext_modules=[Extension('_fdct2_wrapper',
                    [os.path.join('src', 'fdct2_wrapper.cpp'), os.path.join('src', 'fdct2_wrapper.i')],
                    include_dirs=[fdct2, fftw_inc, npy_inc, pycl_inc],
-                   library_dirs=[fdct2, fftw_lib], libraries=['fdct_wrapping', 'fftw']),
+                   library_dirs=[fdct2, fftw_lib, CPP], libraries=['fdct_wrapping', 'fftw','c++'],
+                       language="c++",
+                       extra_compile_args = ['-O3', '-std=c++14', '-stdlib=libc++', '-lc++']),#,
+                   #extra_compile_args = ['-stdlib=libc++'])],
                    Extension('_fdct3_wrapper',
                    [os.path.join('src', 'fdct3_wrapper.cpp'), os.path.join('src', 'fdct3_wrapper.i')],
                    include_dirs=[fdct3, fftw_inc, npy_inc, pycl_inc],
-                   library_dirs=[fdct3, fftw_lib], libraries=['fdct3d', 'fftw'])],
+                   library_dirs=[fdct3, fftw_lib, CPP], libraries=['fdct3d', 'fftw','c++'],
+                       language="c++",
+                       extra_compile_args = ['-O3', '-std=c++14', '-stdlib=libc++', '-lc++'])],#,
+                   #extra_compile_args = ['-stdlib=libc++'])],
       package_dir={'pyct': 'src'},
       packages=['pyct']
       )
